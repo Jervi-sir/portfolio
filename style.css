@@ -1,26 +1,411 @@
+@import url('https://fonts.googleapis.com/css2?family=Aldrich&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Jaldi&display=swap');
 
-/* NOISE */
-.main-content {
-    position: relative;
+
+
+:root {
+  --bg-color: rgb(23, 34, 59);
+  --main-font: 'Aldrich', sans-serif;
+  --first-color: aquamarine;
+  --second-color: rgb(0, 188, 212);
+  --git-code-font-family: 'Aldrich',  sans-serif;
+}
+
+body {
+  background-color: var(--bg-color);
+  margin: 0;
+  padding: 0;
+  color: white;
+  font-family: var(--main-font);
+}
+
+.bg {
+  position: fixed;
+  top: -50%;
+  left: -50%;
+  right: -50%;
+  bottom: -50%;
+  width: 200%;
+  height: 200vh;
+  background: transparent url('http://assets.iceable.com/img/noise-transparent.png') repeat 0 0;
+  background-repeat: repeat;
+  animation: bg-animation .2s infinite;
+  opacity: .9;
+  z-index: -1;
+}
+
+@keyframes bg-animation {
+    0% { transform: translate(0,0) }
+    10% { transform: translate(-5%,-5%) }
+    20% { transform: translate(-10%,5%) }
+    30% { transform: translate(5%,-10%) }
+    40% { transform: translate(-5%,15%) }
+    50% { transform: translate(-10%,5%) }
+    60% { transform: translate(15%,0) }
+    70% { transform: translate(0,10%) }
+    80% { transform: translate(-15%,0) }
+    90% { transform: translate(10%,5%) }
+    100% { transform: translate(5%,0) }
+}
+
+
+.sidenav {
+  background-color: var(--bg-color);
+  box-shadow:  0px 4px 6px 0px rgba(0, 0, 0, 0.5);
+}
+
+.sidenav {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  height: 100%;
+  width: 70px;
+  position: fixed;
+  z-index: 1;
+  top: 0;
+  left: 0;
+}
+
+.nav , .social{
     display: flex;
-    align-items: center;
-    justify-content: center;
-    flex-flow: column;
-    height: 100vh;
-    background: #111111;
-    color: #fff;
-    text-align: center;
+    flex-direction: column;
+    padding-bottom: 1rem;
+  
+  }
+  .item.active {
+    padding-bottom: 0.7rem;
+    border-right: 4px solid rgb(214, 65, 97);
+    border-bottom: 4px solid rgb(214, 65, 97);
+    
+  }
+   
+  .nav .item, .social .item {
+    font-size: 1.5rem;
+    margin-top: 2rem; 
+  }
+
+.nav a:hover, .social a:hover{
+  color: rgb(3, 134, 91);
+  border-color: #9ecaed;
+  transition: 0.5s;
+}
+
+
+.nav .item, .social .item {
+  text-align: center;
+  color: var(--first-color);
+}
+
+.logo {
+  padding-top: 1rem;
+}
+
+.logo img {
+  width: 100%;
+}
+
+
+/*   left   */
+.left {
+  user-select: none; 
+}
+.contact-me {
+  border: 2px solid teal;
+  color: rgb(255, 255, 255);
+  font-weight: bold;
+  padding: 1rem;
+  margin-top: 4rem;
+  background: transparent;
+  width: 50%;
+}
+
+.contact-me:hover {
+  border: 2px solid rgb(54, 221, 221);
+  color: rgb(54, 252, 252);
+  cursor: pointer;
+  transition: 0.5s;
+
+}
+
+
+.main {
+  padding-left: 20px;
+  display: flex;
+  padding-top: 25vh;
+  justify-content: space-around;
+}
+
+.left h1 {
+  margin-top: 0;
+  font-size: 5rem;
+  
+}
+
+.left h1 span {
+  font-size: 4rem;
+  font-weight: normal;
+}
+
+.left p { 
+  font-size: 1.7rem;
+  font-weight: 1;
+
+}
+.left h3 {
+  font-size: 1rem;
+  font-weight: 1;
+}
+
+
+/*   right   */
+.right {
+  font-family: var(--git-code-font-family);
+  font-weight: lighter;
+}
+
+em {
+  font-style: normal !important;
+}
+
+.right .parent, .right .parent-children {
+  color: var(--first-color);
+  padding-left: 20px;
+}
+
+.closing-braces {
+  padding-left: 20px;
+}
+
+.right .children {
+  color: var(--second-color);
+  padding-right: 5px;
+  padding-left: 3rem;
+}
+
+
+
+/*    footer     */
+footer{
+  position: absolute;
+  bottom: 0;
+  display: inline-block;
+  width: 100%;
+  text-align: center;
+  padding-bottom: 10px;
+  user-select: none;
+}
+
+
+footer a {
+  color: rgba(240, 248, 255, 0.514);
+  text-decoration: none;
+  user-select: text;
+
+}
+
+footer a:hover {
+  color: var(--first-color);
+  transition: 0.5s;
+}
+
+.work-phone {
+  display: none;
+}
+
+@media only screen and (max-width: 600px){
+	/*Big smartphones [426px -> 600px]*/
+  .sidenav {
+    top: 0;
+    width: 100%;
+    height: 70px;
+    flex-direction: row;
+    padding: 0;
+    box-shadow:  0px 1px 6px 6px rgba(0, 0, 0, 0.5);
+
   }
   
-  .noise {
-    z-index: 100;
-    position: absolute;
-    top: 0;
-    left: 0;
+  .sidenav .logo {
+    display: none;
+  }
+
+  .sidenav .nav {
+    display: flex;
+    flex-direction: row;
     width: 100%;
     height: 100%;
-    pointer-events: none;
-    opacity: 0.2;
+
+    justify-content: space-around;
+  }
+
+  .item {
+    width: 60px;
+  }
+
+  .item.active {
+    padding-bottom: 0;
+    border: none;
+    border-bottom: 4px solid rgb(214, 65, 97);
   }
   
-  /* ...................... */
+  .sidenav .social {
+    display: none;
+  }
+
+  .content {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+  }
+
+  .main {
+    display: flex;
+    flex-direction: column;
+    padding: 0;
+    padding-top: 6rem;
+    height: 80%;
+  }
+
+
+  .left {
+    margin: auto;
+    width: 70%;
+    text-align: center;
+
+  }
+
+  .left h1 {
+    margin-bottom: 0;
+  }
+
+  .left button {
+    margin-top: 1.7rem;
+  }
+
+
+  .right {
+    width: 70%;
+    margin: auto;
+    display: none;
+  }
+  .right .children {
+    padding-left: 1rem;
+  }
+
+  .right .hide {
+    display: none;
+  }
+
+
+  /*    footer     */
+  footer{
+    position: static;
+    text-align: center;
+    padding-bottom: 10px;
+    user-select: none;
+  }
+
+
+  footer a {
+    text-decoration: none;
+    user-select: text;
+    color: var(--first-color);
+
+  }
+
+  .work-phone {
+    display: block;
+    margin-top: 3rem;
+    margin-bottom: 3rem;
+  }
+
+}
+
+
+/* ...........Glitch.......................... */
+.TextGlitch {
+  --TextGlitch-blendSize: .08em;
+  --TextGlitch-blendColorA: #77f8;
+  --TextGlitch-blendColorB: #ff68;
+  position: relative;
+  color: #fff;
+  line-height: 1em;
+  letter-spacing: -0.1ch;
+  font-size: 8vw;
+  font-family: "Fira Code", monospace;
+  width: 60%;
+  padding-left: 20px;
+  margin: auto;
+}
+
+.TextGlitch::after {
+  display: none;
+  content: "";
+  position: absolute;
+  left: 100%;
+  bottom: 0;
+  width: 0.7ch;
+  height: 1em;
+  margin-left: 0.35ch;
+  border-radius: 2px;
+  background-color: currentColor;
+  animation: cursorAnim 1s ease infinite;
+}
+
+@keyframes cursorAnim {
+  0% {
+    opacity: 0.5;
+  }
+  45% {
+    opacity: 0.5;
+  }
+  55% {
+    opacity: 0;
+  }
+  100% {
+    opacity: 0;
+  }
+}
+.TextGlitch-clip {
+  position: relative;
+  display: flex;
+  align-items: baseline;
+}
+
+.TextGlitch-clip + .TextGlitch-clip {
+  position: absolute;
+  top: 0;
+}
+
+.TextGlitch:not(.TextGlitch-blended) .TextGlitch-clip + .TextGlitch-clip {
+  display: none;
+}
+
+.TextGlitch-word {
+  margin: 0;
+  white-space: nowrap;
+
+}
+
+.TextGlitch-blend {
+  position: absolute;
+  top: 0;
+  opacity: 0;
+  transition: 0.1s;
+  transition-property: opacity;
+}
+
+.TextGlitch-blendA {
+  color: var(--TextGlitch-blendColorA);
+  margin: calc( var( --TextGlitch-blendSize ) * -1 ) 0 0 var(--TextGlitch-blendSize);
+  mix-blend-mode: darken;
+}
+
+.TextGlitch-blendB {
+  color: var(--TextGlitch-blendColorB);
+  margin: var(--TextGlitch-blendSize) 0 0 calc( var( --TextGlitch-blendSize ) * -1 );
+  mix-blend-mode: color-burn;
+}
+
+.TextGlitch-blended .TextGlitch-blend {
+  opacity: 0.4;
+}

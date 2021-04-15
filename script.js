@@ -1,89 +1,112 @@
-const noise = () => {
-    let canvas, ctx;
 
-    let wWidth, wHeight;
+class TextGlitch {
+	constructor( root ) {
+		this._root = root;
+		this._elClips = root.querySelectorAll( ".TextGlitch-clip" );
+		this._elWords = root.querySelectorAll( ".TextGlitch-word" );
+		this._frame = this._frame.bind( this );
+		this._unglitch = this._unglitch.bind( this );
+		this._frameId = null;
+		this._text = "";
+		this._textAlt = [];
+		Object.seal( this );
 
-    let noiseData = [];
-    let frame = 0;
+		this.setTexts( [
+			"Check my Works!",
+			"Yeeee Boiiiiii?",
+			"µ37(0 [R132q?",
+			"µ31)* {&13Nb?",
+			"#+:|* {&><@$?",
+		] );
+		
+		// this.setTexts( [
+		// 	"hello world !",
+		// 	"HELLO WORLD ?",
+		// 	"µ3770 3027q ?",
+		// 	"µ311p MQ51b ?",
+		// ] );
+	}
 
-    let loopTimeout;
+	on() {
+		if ( !this._frameId ) {
+			this._frame();
+		}
+	}
+	off() {
+		clearTimeout( this._frameId );
+		this._frameId = null;
+		this._unglitch();
+	}
+	setTexts( [ text, ...alt ] ) {
+		this._text = text;
+		this._textAlt = alt;
+	}
 
+	// private:
+	// .....................................................................
+	_frame() {
+		this._glitch();
+		setTimeout( this._unglitch, 50 + Math.random() * 200 );
+		this._frameId = setTimeout( this._frame, 250 + Math.random() * 500 );
+	}
+	_glitch() {
+		this._addClipCSS();
+		this._textContent( this._randText() );
+		this._root.classList.add( "TextGlitch-blended" );
+	}
+	_unglitch() {
+		this._removeClipCSS();
+		this._textContent( this._text );
+		this._root.classList.remove( "TextGlitch-blended" );
+	}
+	_textContent( txt ) {
+		this._elWords.forEach( el => el.textContent = txt );
+	}
 
-    // Create Noise
-    const createNoise = () => {
-        const idata = ctx.createImageData(wWidth, wHeight);
-        const buffer32 = new Uint32Array(idata.data.buffer);
-        const len = buffer32.length;
+	// CSS clip-path, to cut the letters like an overflow:hidden
+	// .....................................................................
+	_addClipCSS() {
+		const clips = this._elClips,
+			clip1 = this._randDouble( .1 ),
+			clip2 = this._randDouble( .1 );
 
-        for (let i = 0; i < len; i++) {
-            if (Math.random() < 0.5) {
-                buffer32[i] = 0xff000000;
-            }
-        }
+		clips[ 0 ].style.transform = `translate(${ this._randDouble( .3 ) }em, .02em)`;
+		clips[ 2 ].style.transform = `translate(${ this._randDouble( .3 ) }em, -.02em)`;
+		clips[ 0 ].style.clipPath = `inset( 0 0 ${ .6 + clip1 }em 0 )`;
+		clips[ 1 ].style.clipPath = `inset( ${ .4 - clip1 }em 0 ${ .3 - clip2 }em 0 )`;
+		clips[ 2 ].style.clipPath = `inset( ${ .7 + clip2 }em 0 0 0 )`;
+	}
+	_removeClipCSS() {
+		this._elClips.forEach( el => {
+			el.style.clipPath =
+			el.style.transform = "";
+		} );
+	}
 
-        noiseData.push(idata);
-    };
+	// Switch some chars randomly
+	// .....................................................................
+	_randText() {
+		const txt = Array.from( this._text );
 
+		for ( let i = 0; i < 12; ++i ) {
+			const ind = this._randInt( this._text.length );
 
-    // Play Noise
-    const paintNoise = () => {
-        if (frame === 9) {
-            frame = 0;
-        } else {
-            frame++;
-        }
+			txt[ ind ] = this._textAlt[ this._randInt( this._textAlt.length ) ][ ind ];
+		}
+		return txt.join( "" );
+	}
 
-        ctx.putImageData(noiseData[frame], 0, 0);
-    };
+	// rand utils
+	// .....................................................................
+	_randDouble( d ) {
+		return Math.random() * d - d / 2;
+	}
+	_randInt( n ) {
+		return Math.random() * n | 0;
+	}
+}
 
+const elTitle = document.querySelector( "#title" );
+const glitch = new TextGlitch( elTitle );
 
-    // Loop
-    const loop = () => {
-        paintNoise(frame);
-
-        loopTimeout = window.setTimeout(() => {
-            window.requestAnimationFrame(loop);
-        }, (1500 / 25));
-    };
-
-
-    // Setup
-    const setup = () => {
-        wWidth = window.innerWidth;
-        wHeight = window.innerHeight;
-
-        canvas.width = wWidth;
-        canvas.height = wHeight;
-
-        for (let i = 0; i < 10; i++) {
-            createNoise();
-        }
-
-        loop();
-    };
-
-
-    // Reset
-    let resizeThrottle;
-    const reset = () => {
-        window.addEventListener('resize', () => {
-            window.clearTimeout(resizeThrottle);
-
-            resizeThrottle = window.setTimeout(() => {
-                window.clearTimeout(loopTimeout);
-                setup();
-            }, 200);
-        }, false);
-    };
-
-
-    // Init
-    const init = (() => {
-        canvas = document.getElementById('noise');
-        ctx = canvas.getContext('2d');
-
-        setup();
-    })();
-};
-
-noise();
+glitch.on();
